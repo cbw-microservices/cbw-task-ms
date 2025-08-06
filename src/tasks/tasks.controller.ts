@@ -42,7 +42,7 @@ export class TasksController {
   }
 
   @MessagePattern('patchTask')
-  patch(@Payload() payload: { id: string;  patchTaskDto:PatchTaskDto}) {
+  patch(@Payload() payload: { id: string; patchTaskDto: PatchTaskDto }) {
     const { id, patchTaskDto } = payload;
     return this.tasksService.update(id, patchTaskDto);
   }
