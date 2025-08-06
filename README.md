@@ -11,28 +11,9 @@
   | MongoDB       | Base de datos                    |
   | Redis         | Sistema de colas (Bull)          |
   | Bull          | Gestión de trabajos asíncronos   |
-  | Docker        | Contenedores                     |
-  | Docker Compose| Orquestación de servicios        |
+  
 
 ## 📦 Instalación y ejecución 
-### 🔧 Usando Docker (recomendado) 
-
-  1. Clonar el repositorio: 
-
-    git clone <url-del-repo> 
-    cd cbw-task-ms  
-
-  2. Crear un archivo `.env` con el siguiente contenido: 
-
-    PORT=3000 
-    DATABASE_URL=mongodb://mongo:27017/tasksdb 
-    REDIS_HOST=redis 
-    REDIS_PORT=6379  
-
-  3. Levantar los servicios: 
-    docker-compose --env-file .env up --build  
-
-  4. La API estará disponible en: http://localhost:3000  
 
 ### 💻 Modo desarrollo (sin Docker) 
   Requiere MongoDB y Redis instalados localmente. 
