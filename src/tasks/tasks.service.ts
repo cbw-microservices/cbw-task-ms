@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { Model } from 'mongoose';
@@ -6,6 +6,7 @@ import { Task, TaskDocument } from './entities/task.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { TaskStatus } from './enums/task-status.enum';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class TasksService {
@@ -39,7 +40,7 @@ export class TasksService {
   async findOne(id: string): Promise<Task> {
     const task = await this.taskModel.findById(id).exec();
     if (!task) {
-      throw new NotFoundException(`Task with id ${id} not found`);
+      throw new RpcException(`Task with id ${id} not found`);
     }
     return task;
   }
@@ -50,7 +51,7 @@ export class TasksService {
       .exec();
 
     if (!updatedTask) {
-      throw new NotFoundException(`Task with id ${id} not found`);
+      throw new RpcException(`Task with id ${id} not found`);
     }
     return updatedTask;
   }
@@ -58,7 +59,7 @@ export class TasksService {
   async findByStatus(status: TaskStatus): Promise<Task[]> {
     const tasks = await this.taskModel.find({ status }).exec();
     if (tasks.length === 0) {
-      throw new NotFoundException(`No tasks found with status ${status}`);
+      throw new RpcException(`No tasks found with status ${status}`);
     }
     return tasks;
   }
@@ -66,7 +67,7 @@ export class TasksService {
   async remove(id: string): Promise<Task> {
     const deletedTask = await this.taskModel.findByIdAndDelete(id).exec();
     if (!deletedTask) {
-      throw new NotFoundException(`Task with id ${id} not found`);
+      throw new RpcException(`Task with id ${id} not found`);
     }
     return deletedTask;
   }

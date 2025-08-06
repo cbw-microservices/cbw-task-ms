@@ -9,6 +9,7 @@ import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { PaginationResponse } from './interfaces/pagination-response.interface';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
+import { ParseMongoIdPipe } from 'src/common/pipes/parse-mongo-id.pipe';
 
 @Controller()
 export class TasksController {
@@ -30,18 +31,20 @@ export class TasksController {
   }
 
   @MessagePattern('findOneTask')
-  findOne(@Payload('id') id: string) {
+  findOne(@Payload('id', ParseMongoIdPipe) id: string) {
     return this.tasksService.findOne(id);
   }
 
   @MessagePattern('updateTask')
-  update(@Payload() dto: UpdateTaskDto) {
-    return this.tasksService.update(dto.id, dto);
+  update(@Payload() payload: { id: string; updateTaskDto: UpdateTaskDto }) {
+    const { id, updateTaskDto } = payload;
+    return this.tasksService.update(id, updateTaskDto);
   }
 
   @MessagePattern('patchTask')
-  patch(@Payload() dto: PatchTaskDto) {
-    return this.tasksService.update(dto.id, dto);
+  patch(@Payload() payload: { id: string;  patchTaskDto:PatchTaskDto}) {
+    const { id, patchTaskDto } = payload;
+    return this.tasksService.update(id, patchTaskDto);
   }
 
   @MessagePattern('findByStatus')
