@@ -6,7 +6,6 @@ interface EnvVars {
   DATABASE_URL: string;
   REDIS_HOST: string;
   REDIS_PORT: number;
-
   NATS_SERVERS: string[];
 }
 
@@ -16,6 +15,10 @@ const envsSchema = joi
     DATABASE_URL: joi.string().required(),
     REDIS_HOST: joi.string().required(),
     REDIS_PORT: joi.number().required(),
+    NATS_SERVERS: joi
+      .array()
+      .items(joi.string())
+      .required(),
   })
   .unknown(true);
 
@@ -35,4 +38,5 @@ export const envs = {
   databaseUrl: envVars.DATABASE_URL,
   redisHost: envVars.REDIS_HOST,
   redisPort: envVars.REDIS_PORT,
+  natsServers: envVars.NATS_SERVERS,
 };
